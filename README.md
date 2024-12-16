@@ -12,6 +12,7 @@ Develop a command-line interface (CLI) tool to seed data into your local MongoDB
 
 ## Usage
 
+auction-cli <commmands> <options>
 
 ### Commands
 
