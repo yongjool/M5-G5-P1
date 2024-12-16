@@ -1,0 +1,24 @@
+{
+    "name": "trademeproject",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "eslint .",
+        "format": "prettier --write .",
+        "lint:fix": "eslint --fix ."
+    },
+    "keywords": [],
+    "author": "",
+    "bin": {
+        "auction-cli": "src/index.js"
+    },
+    "type": "module",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "chalk": "^5.3.0",
+        "commander": "^12.1.0",
+        "mongoose": "^8.9.0"
+    }
+}
