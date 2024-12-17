@@ -36,16 +36,17 @@ Options:
 Remove an auction item.
 
 Options:
-- `-t, --title <title>`         Title of the auction item to remove
+- '-k, --sku <sku>', 'SKU of the item to remove'
 
 ---
 
 #### `update`
 Update an existing auction item.
 
+Required:
+- '-k, --sku <sku>', 'SKU of the item to update'
 Options:
-- `-t, --title <title>`           Title of the item to update
-- `-n, --new_title <new_title>`   New title of the product
+- '-t, --title <title>', 'New title of the item'
 - `-d, --description <description>` Update the description of the item
 - `-s, --start_price <start_price>` Update the starting price of the item
 - `-r, --reserve_price <reserve_price>` Update the reserve price of the item
