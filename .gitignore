@@ -1,0 +1,15 @@
+# Node.js
+node_modules/
+
+# Build directories
+build/
+
+# Coverage reports
+coverage/
+
+# Environment variables
+.env
+
+# Docker
+docker-compose.override.yml
+.env.docker
