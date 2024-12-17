@@ -10,7 +10,7 @@ Task 5: Seed Auction Data into MongoDB
 
 Develop a command-line interface (CLI) tool to seed data into your local MongoDB database or delete data from it.  Ensure that this tool is source-controlled and includes the seed data.  Team members should be able to seed data by cloning the repository.  Add sample data for a few auction items with the following 4 fields: title, description, start_price, reserve_price.
 
-## Usage
+## Usage for CLI
 
 `auction-cli <commmands> <options>`
 
@@ -52,3 +52,11 @@ Options:
 - `-r, --reserve_price <reserve_price>` Update the reserve price of the item
 
 ---
+
+## Usage for API
+
+- Endpoint: '/api/search'
+- Method : 'Get'
+- Description : send searchString, returns auction Item array.
+- Response : '{"auctionItems":[{"sku":"JbaGi4dN0X","title":"Antique Vase","description":"A rare ceramic vase from the 19th century.","start_price":300,"reserve_price":500,"__v":0}}]}'
+
