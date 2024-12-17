@@ -21,15 +21,21 @@ export async function searchByKeyword(req, res, next) {
             topP: 0.95,
             topK: 40,
             maxOutputTokens: 8192,
-            responseMimeType: 'text/plain',
+            responseMimeType: 'application/json',
         };
 
         const systemInstruction = `
-        Create a search query for an auction house to find an item. 
-        You can provide multiple guesses or variations of the item’s name, category, condition, or attributes, with words separated by spaces only. 
-        Based on these guesses, generate the best possible description of the item that most closely matches the query. 
-        The description should be returned in array format, with no repeated words, special characters, or explanations.
-        make sure your answer is in array format surrounded by [ and ].
+Create a search query for an auction house to find a specific item. 
+Provide multiple guesses or variations of the item’s exact name, category, condition, or key attributes. 
+Based on these guesses, generate the best possible description of the item that closely matches the query.
+Return the description in an array format with no repeated words, special characters, or explanations.
+The final output must be in JSON format and include:
+A search property, which is an array of precise keywords related to the specific item (name, category, condition, specific attributes).
+If the user mentions any price-related terms, include minPrice and/or maxPrice property as numeric values. 
+If no price-related terms are mentioned, omit the minPrice and maxPrice properties entirely (do not include null or empty values).
+if user input in one word, return the same word in the search property.
+Do not add any other properties than search, minPrice and maxPrice. 
+Avoid vague terms that can apply to multiple objects.
         `;
 
         // Initialize the generative model with system instruction
@@ -43,27 +49,54 @@ export async function searchByKeyword(req, res, next) {
         const result = await chatSession.sendMessage(query);
 
         // Search for auction items based on the AI's response
-        const aiResponseText = result.response.text().replace(/\n/g, ' ');
+        const aiResponseText = JSON.parse(result.response.text());
 
         console.log(aiResponseText);
 
         // Search for auction items based on the AI's response in both title or description
-        const auctionItems = await AuctionItem.find({
-            $or: [
+        const searchTerm = {
+            $and: [
                 {
-                    title: {
-                        $regex: JSON.parse(aiResponseText).join('|'),
-                        $options: 'i',
-                    },
-                }, // Case-insensitive search in title
-                {
-                    description: {
-                        $regex: JSON.parse(aiResponseText).join('|'),
-                        $options: 'i',
-                    },
-                }, // Case-insensitive search in description
+                    $or: [
+                        {
+                            title: {
+                                $regex: `\\b${aiResponseText.search.join(
+                                    '\\b|\\b'
+                                )}\\b`, // Match whole words in title
+                                $options: 'i', // Case-insensitive search
+                            },
+                        },
+                        {
+                            description: {
+                                $regex: `\\b${aiResponseText.search.join(
+                                    '\\b|\\b'
+                                )}\\b`, // Match whole words in description
+                                $options: 'i', // Case-insensitive search
+                            },
+                        },
+                    ],
+                },
             ],
-        });
+        };
+
+        if (aiResponseText.minPrice) {
+            searchTerm.$and.push({
+                reserve_price: {
+                    $gte: aiResponseText.minPrice, // Price greater than or equal to minPrice
+                },
+            });
+        }
+
+        // Optionally, add maxPrice condition if maxPrice exists
+        if (aiResponseText.maxPrice) {
+            searchTerm.$and.push({
+                reserve_price: {
+                    $lt: aiResponseText.maxPrice, // Price less than maxPrice
+                },
+            });
+        }
+
+        const auctionItems = await AuctionItem.find(searchTerm);
 
         // If no auction items are found, return an empty array
         if (auctionItems.length === 0) {

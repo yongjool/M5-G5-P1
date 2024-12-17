@@ -108,11 +108,12 @@ const SearchAuctionPage = () => {
                         <p>{item.description}</p>
                         <div className="auction-prices">
                             <p>
-                                <strong>Start Price:</strong> ${item.startPrice}
+                                <strong>Start Price:</strong> $
+                                {item.start_price}
                             </p>
                             <p>
                                 <strong>Reserve Price:</strong> $
-                                {item.reservePrice}
+                                {item.reserve_price}
                             </p>
                         </div>
                     </div>
