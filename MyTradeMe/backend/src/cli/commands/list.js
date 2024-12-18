@@ -16,7 +16,7 @@ async function list() {
             items.forEach((item, index) => {
                 console.log(
                     chalk.yellowBright(
-                        `${index + 1}. SKU: ${item.sku}, ${item.title} , ${
+                        `${index + 1}. _id: ${item._id}, ${item.title} , ${
                             item.description
                         } , $${item.start_price}, $${item.reserve_price}`
                     )

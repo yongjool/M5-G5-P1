@@ -2,8 +2,19 @@
 
 import { program } from 'commander';
 import dotenv from 'dotenv';
-// Load environment variables from the .env file
-dotenv.config();
+
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
+
+// Get the directory of this script
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Resolve the root directory (adjust path if needed)
+const rootPath = resolve(__dirname, '../../'); // Adjust to your root folder relative to index.js
+
+// Load the .env file from the root directory
+dotenv.config({ path: resolve(rootPath, '.env') });
 
 import list from './commands/list.js';
 import add from './commands/add.js';
@@ -31,17 +42,17 @@ program
 // prettier-ignore
 program
     .command('remove')
-    .description('Remove an auction item by sku')
-    .requiredOption('-k, --sku <sku>', 'SKU of the item to remove')
+    .description('Remove an auction item by _id')
+    .requiredOption('-k, --key <_id>', '_id of the item to remove')
     .action((options) => {
-        remove(options.sku);
+        remove(options.key);
     });
 
 // prettier-ignore
 program
     .command('update')
-    .description('Update an auction item by sku')
-    .requiredOption('-k, --sku <sku>', 'SKU of the item to update')
+    .description('Update an auction item by _id')
+    .requiredOption('-k, --key <_id>', '_id of the item to update')
     .option('-t, --title <title>', 'New title of the item')
     .option('-d, --description <description>', 'New description of the item')
     .option('-s, --start_price <start_price>', 'Update start price of the item', parseFloat)
@@ -52,7 +63,7 @@ program
         if (options.description) updatedFields.description = options.description;
         if (options.start_price) updatedFields.start_price = options.start_price;
         if (options.reserve_price) updatedFields.reserve_price = options.reserve_price;
-        update(options.sku, updatedFields);
+        update(options.key, updatedFields);
       });
 
 program.parse(); // This line is important. It tells commander to parse the arguments and execute the appropriate command.

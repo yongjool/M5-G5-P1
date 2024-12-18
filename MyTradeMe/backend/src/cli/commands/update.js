@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import AuctionItem from '../../api/models/AuctionItem.js'; //  model for MongoDB
 import chalk from 'chalk';
 
-async function update(sku, updatedFields) {
+async function update(_id, updatedFields) {
     const mongoURI = process.env.MONGO_URI;
     try {
         // Connect to MongoDB
@@ -10,11 +10,11 @@ async function update(sku, updatedFields) {
         console.log(chalk.green.bold('Connected to MongoDB - ', mongoURI));
 
         // Fetch the product by the old title to get the old properties
-        const oldItem = await AuctionItem.findOne({ sku });
+        const oldItem = await AuctionItem.findOne({ _id });
 
         if (!oldItem) {
             console.log(
-                chalk.red.bold(`No item found with Stock Keeping Unit ${sku}.`)
+                chalk.red.bold(`No item found with Stock Keeping Unit ${_id}.`)
             );
             mongoose.connection.close();
             return;
@@ -26,7 +26,7 @@ async function update(sku, updatedFields) {
 
         // Find the product by the old title and update the specified fields
         const updatedItem = await AuctionItem.findOneAndUpdate(
-            { sku },
+            { _id },
             updatedFields,
             { new: true } // Return the updated document
         );
@@ -36,9 +36,7 @@ async function update(sku, updatedFields) {
             console.log(chalk.blue.bold('Updated Item Properties:'));
             console.log(chalk.blue(updatedItem));
         } else {
-            console.log(
-                chalk.red.bold(`No item found with Stock Keeping Unit ${sku}.`)
-            );
+            console.log(chalk.red.bold(`No item found. ID : ${_id}.`));
         }
 
         // Close the connection after operation

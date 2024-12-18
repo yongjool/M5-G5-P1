@@ -4,13 +4,12 @@
     "main": "index.js",
     "scripts": {
         "dev": "nodemon ./src/api/server.js",
-        "start": "node ./src/api/server.js",
-        "test": "jest"
+        "start": "node ./src/api/server.js"
     },
     "keywords": [],
     "type": "module",
     "bin": {
-        "auction-cli": "src/cli/index.js"
+        "auction-cli": "./src/cli/index.js"
     },
     "author": "",
     "license": "ISC",
@@ -22,8 +21,7 @@
         "cors": "^2.8.5",
         "dotenv": "^16.4.7",
         "express": "^4.21.2",
-        "mongoose": "^8.9.1",
-        "nanoid": "^5.0.9"
+        "mongoose": "^8.9.1"
     },
     "devDependencies": {
         "jest": "^29.7.0",

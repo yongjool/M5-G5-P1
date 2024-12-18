@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { nanoid } from 'nanoid';
 import chalk from 'chalk';
 import AuctionItem from '../../api/models/AuctionItem.js'; //  model for MongoDB
 
@@ -12,7 +11,6 @@ async function add(title, description, start_price, reserve_price) {
 
         // Create a new product instance
         const newItem = new AuctionItem({
-            sku: nanoid(10), // Generate a unique SKU
             title,
             description,
             start_price,
@@ -21,7 +19,7 @@ async function add(title, description, start_price, reserve_price) {
 
         console.log(
             chalk.yellowBright(
-                `Item added SKU: ${newItem.sku}, ${newItem.title} , ${newItem.description} , $${newItem.start_price}, $${newItem.reserve_price}`
+                `Item added _id: ${newItem._id}, ${newItem.title} , ${newItem.description} , $${newItem.start_price}, $${newItem.reserve_price}`
             )
         );
 

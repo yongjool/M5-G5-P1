@@ -1,13 +1,16 @@
 {
-      // Enable format on save
-  "editor.formatOnSave": true,
+    // Enable format on save
+    "editor.formatOnSave": true,
 
-  // Set Prettier as the default formatter
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+    // Set Prettier as the default formatter
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
 
-  // Auto-fix ESLint issues on save
-  "eslint.autoFixOnSave": true,
+    // Auto-fix ESLint issues on save
+    "eslint.autoFixOnSave": true,
 
-  // Optionally, enable to show ESLint problems in the Problems panel
-  "eslint.alwaysShowStatus": true,
+    // Optionally, enable to show ESLint problems in the Problems panel
+    "eslint.alwaysShowStatus": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    }
 }
